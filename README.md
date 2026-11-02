@@ -3,6 +3,7 @@
 A small Python script that checks whether websites and APIs are responding. For each address in a list, it prints the status code, how long the response took, and what kind of result it was.
 
 ## What it does
+- Checks that a JSON reply contains an expected label, and reports when a reply is not valid JSON
 - Sends a request to each address in a list
 - Prints the status code and the response time
 - Sorts the result into three groups:
