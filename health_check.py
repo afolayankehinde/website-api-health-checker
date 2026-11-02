@@ -3,6 +3,23 @@ sys.stdout.reconfigure(encoding="utf-8")
 
 import requests
 
+def check_json_field(url, key):
+    print(f"Checking JSON from: {url}")
+    try:
+        response = requests.get(url, timeout=5)
+        data = response.json()
+    except ValueError:
+        print("FAIL: the reply is not valid JSON")
+        return
+    except requests.exceptions.RequestException as e:
+        print(f"Network Error ({e})")
+        return
+
+    if key in data:
+        print(f"PASS: found '{key}' in the reply")
+    else:
+        print(f"FAIL: '{key}' is missing from the reply")
+
 def advanced_health_check(url):
     print(f"Checking: {url}")
     
@@ -11,7 +28,7 @@ def advanced_health_check(url):
         response = requests.get(url, timeout=5)
         print(f"Response time: {response.elapsed.total_seconds():.2f}s")
         
-        # 🟢 Category 1: Total Success (200-299)
+        # 🟢 Category 1: Total Success (below 400)
         if response.ok:
             print(f"Success! Status Code: {response.status_code} ✅")
             
@@ -38,3 +55,12 @@ sites = [
 
 for site in sites:
     advanced_health_check(site)
+    
+check_json_field("https://httpbin.org/json", "slideshow")
+check_json_field("https://httpbin.org/json", "author")
+check_json_field("https://httpbin.org/html", "slideshow")
+
+r = requests.get("https://httpbin.org/json", timeout=5)
+info = r.json()["slideshow"]
+# 'author' sits inside 'slideshow', so this top-level check is expected to fail
+print("'author' inside 'slideshow':", "author" in info)
