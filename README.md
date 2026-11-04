@@ -42,6 +42,7 @@ The test addresses come from httpbin.org, a free service made for testing. Respo
 ## Limitations
 - It checks each address once and then stops. It does not run on a schedule or keep a log.
 - Only test websites and APIs that you own or have permission to test.
+- Two of the JSON checks are set to fail on purpose, to show how the script reports a missing label and a reply that isn't JSON.
 
 ## Ideas for next steps
 - Repeat the checks on a timer
